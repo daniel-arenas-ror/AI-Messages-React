@@ -1,3 +1,6 @@
+import { IoClose } from "react-icons/io5";
+import RoundedBtn from "../Common/RoundedBtn"
+
 function Header() {
   return (
    <div className="flex justify-between bg-[#202d33] h-[60px] p-3">
@@ -8,9 +11,25 @@ function Header() {
         className="rounded-full w-[45px] h-[45px] mr-5"
       />
 
-      <p
-        className="text-3xl font-bold underline"
-      >HI!!!</p>
+      <div
+        className="flex flex-col"
+      >
+        <h1
+          className="text-white font-medium"
+        >AI Name</h1>
+
+        <p
+          className="text-[#8796a1] text-xs"
+        >
+          Online
+        </p>
+      </div>
+
+      <div
+          className="flex justify-between items-center w-[85px]"
+        >
+          <RoundedBtn icon={<IoClose />} />
+        </div>
     </div>
    </div> 
   )
