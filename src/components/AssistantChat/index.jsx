@@ -2,6 +2,7 @@ import { useLayoutEffect, useEffect, useState } from 'react';
 import Messages from "../Messages";
 import TextBox from "../TextBox";
 import consumer from "../../utils/cable";
+import Header from '../Header';
 
 function AssistanChat() {
   const [threadId, setThreadId] = useState("thread_PS4ybSKVZmIFlh5nbF4nMlcJ")
@@ -40,7 +41,7 @@ function AssistanChat() {
 
   return (
     <div className="flex flex-col h-screen">
-      <p>Header</p>
+      <Header />
       <Messages messages={messages}/>
       <TextBox threadId={threadId} />
     </div>
