@@ -1,4 +1,8 @@
 function Message({ message }) {
+
+  console.log(" message ")
+  console.log( message )
+
   const msg  = message.content[0]?.text?.value
   const sent = message.role === 'user'
 
@@ -8,7 +12,12 @@ function Message({ message }) {
         sent ? "bg-[#005c4b] ml-auto" : "bg-[#202d33] mr-auto"
       }`}
     >
-      <p className="text-white text-sm mr-2">{msg}</p>
+      <div
+        className="flex justify-between items-end max-w-[410px] p-2"
+        style={{ wordBreak: "break-word" }}
+      >
+        <p className="text-white text-sm mr-2">{msg}</p>
+      </div>
     </div>
   )
 }
