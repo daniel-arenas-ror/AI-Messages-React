@@ -7,6 +7,7 @@ import Header from '../Header';
 function AssistanChat() {
   const [threadId, setThreadId] = useState("thread_PS4ybSKVZmIFlh5nbF4nMlcJ")
   const [messages, setMessages] = useState([])
+  const [isTyping, setisTyping] = useState(false)
 
   useEffect(() => {
     console.log("componentDidMount")
@@ -23,9 +24,16 @@ function AssistanChat() {
       received: (data) => {
         console.log("Receibe data!!")
         console.log(data)
+
         switch (data.action) {
           case 'updateMessages':
             setMessages(data.messages.data)
+            break;
+          case 'startTyping':
+            setisTyping(true)
+            break;
+          case 'stopTyping':
+            setisTyping(false)
             break;
           default:
             console.log("event dont fount!!")
@@ -39,11 +47,15 @@ function AssistanChat() {
     }
   }, []);
 
+  const addMessage = (message) => {
+    setMessages([...messages, { id: "123", role: "user", content: [{ type: "text", text: { value: message } }]}])
+  }
+
   return (
     <div className="flex flex-col h-screen">
       <Header />
-      <Messages messages={messages}/>
-      <TextBox threadId={threadId} />
+      <Messages messages={messages} isTyping={isTyping} />
+      <TextBox threadId={threadId} addMessage={addMessage} />
     </div>
   ) 
 }

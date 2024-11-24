@@ -1,8 +1,5 @@
 function Message({ message }) {
 
-  console.log(" message ")
-  console.log( message )
-
   const msg  = message.content[0]?.text?.value
   const sent = message.role === 'user'
 

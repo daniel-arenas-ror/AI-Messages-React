@@ -5,8 +5,7 @@ import { BiHappy } from "react-icons/bi";
 import { MdSearch, MdSend } from "react-icons/md";
 import { AiOutlineAudio, AiOutlinePaperClip } from "react-icons/ai";
 
-function TextBox({ threadId }) {
-  const [messages, setMessages] = useState({})
+function TextBox({ threadId, addMessage }) {
   const [typing, setTyping] = useState(false)
 
   const handleInputSubmit = () => {
@@ -29,12 +28,12 @@ function TextBox({ threadId }) {
     })
     .then(res => {
       if(res.ok){
-        console.log("ok!!")
+        addMessage(inputRef.current.value)
+
+        inputRef.current.value = "";
+        inputRef.current.focus();
       }
     })
-
-    inputRef.current.value = "";
-    inputRef.current.focus();
   }
 
   const inputRef = useRef(null)
