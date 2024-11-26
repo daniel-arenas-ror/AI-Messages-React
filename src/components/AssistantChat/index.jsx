@@ -5,7 +5,7 @@ import consumer from "../../utils/cable";
 import Header from '../Header';
 
 function AssistanChat() {
-  const [threadId, setThreadId] = useState("thread_PS4ybSKVZmIFlh5nbF4nMlcJ")
+  const [threadId, setThreadId] = useState("thread_pHmpwDheaK2zyRzPk0WtQPBE")
   const [messages, setMessages] = useState([])
   const [isTyping, setisTyping] = useState(false)
 
@@ -14,17 +14,14 @@ function AssistanChat() {
 
     consumer.subscriptions.create({
       channel: 'AiMessageChannel',
-      assistant_id: 1,
-      thread_id: "thread_PS4ybSKVZmIFlh5nbF4nMlcJ"
+      assistant_id: 3,
+      thread_id: threadId
     }, {
       connected: (data) => {
         console.log('connected', data)
       },
       disconnected: (data) => console.log('disconnected', data),
       received: (data) => {
-        console.log("Receibe data!!")
-        console.log(data)
-
         switch (data.action) {
           case 'updateMessages':
             setMessages(data.messages.data)

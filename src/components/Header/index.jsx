@@ -24,13 +24,12 @@ function Header() {
           Online
         </p>
       </div>
-
-      <div
-          className="flex justify-between items-center w-[85px]"
-        >
-          <RoundedBtn icon={<IoClose />} />
-        </div>
     </div>
+    <div
+        className="w-[85px]"
+      >
+        <RoundedBtn icon={<IoClose />} />
+      </div>
    </div> 
   )
 }

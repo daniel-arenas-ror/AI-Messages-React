@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useRef, useEffect } from "react";
 import Message from "../Message";
 
 function Messages({ isTyping, messages }){
+  const divRef = useRef(null);
+
+  useEffect(() => {
+    divRef.current.scrollTo({ top: divRef.current.scrollHeight, behavior: "smooth" });
+  }, [messages]);
+
   return(
     <div
-      className="bg-[#0a131a] bg-[url('assets/images/bg.webp')] bg-contain overflow-y-scroll h-100"
+      className="bg-[#0a131a] bg-contain overflow-y-scroll h-100"
       style={{ padding: "12px 7%" }}
+      ref={divRef}
+      id="messages_content"
     >
       {messages.map((msg) => (
         <Message
