@@ -5,12 +5,21 @@ import consumer from "../../utils/cable";
 import Header from '../Header';
 import MessageRepository from './../../repositories/messages'
 
+
 function AssistanChat() {
-  const [threadId, setThreadId] = useState("thread_pHmpwDheaK2zyRzPk0WtQPBE")
+  const [assistantId, setAssistantId] = useState(null)
+  const [threadId, setThreadId] = useState(null)
   const [messages, setMessages] = useState([])
   const [isTyping, setisTyping] = useState(false)
 
   useEffect(() => {
+
+    console.log(" new URLSearchParams(window.location.search) ")
+    const queryParameters = new URLSearchParams(window.location.search)
+    const type = queryParameters.get("assistant_id")
+
+    //setAssistantId()
+
     consumer.subscriptions.create({
       channel: 'AiMessageChannel',
       assistant_id: 3,
@@ -19,7 +28,9 @@ function AssistanChat() {
       connected: (data) => {
         console.log('connected', data)
       },
-      disconnected: (data) => console.log('disconnected', data),
+      disconnected: (data) => {
+        console.log('disconnected', data)
+      },
       received: (data) => {
         switch (data.action) {
           case 'updateMessages':
