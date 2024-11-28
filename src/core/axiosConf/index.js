@@ -15,7 +15,7 @@ export class axiosConf {
 }
 
 export default new axiosConf({
-  baseURL: process.env.API_URL_HOST,
+  baseURL: import.meta.env.VITE_API_URL,
   timeout: DEFAULT_TIMEOUT,
   headers: { 'content-type': 'application/json' }
 }).instance()

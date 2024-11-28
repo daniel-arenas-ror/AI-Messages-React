@@ -1,39 +1,13 @@
 import React, { useState, useRef } from "react";
 
 import RoundedBtn from "../Common/RoundedBtn";
-import { BiHappy } from "react-icons/bi";
-import { MdSearch, MdSend } from "react-icons/md";
-import { AiOutlineAudio, AiOutlinePaperClip } from "react-icons/ai";
+import { MdSend } from "react-icons/md";
 
 function TextBox({ threadId, addMessage }) {
-  const [typing, setTyping] = useState(false)
-
   const handleInputSubmit = () => {
     if(inputRef.current.value.length === 0) return;
 
-    let newMessage = {
-      message: {
-        thread_id: threadId,
-        text: inputRef.current.value
-      }
-    }
-    
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-
-    fetch('http://localhost:3000/messages', {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(newMessage)
-    })
-    .then(res => {
-      if(res.ok){
-        addMessage(inputRef.current.value)
-
-        inputRef.current.value = "";
-        inputRef.current.focus();
-      }
-    })
+    addMessage(threadId, inputRef.current.value)
   }
 
   const inputRef = useRef(null)

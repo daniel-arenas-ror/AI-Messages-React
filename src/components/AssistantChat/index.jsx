@@ -1,8 +1,9 @@
-import { useLayoutEffect, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Messages from "../Messages";
 import TextBox from "../TextBox";
 import consumer from "../../utils/cable";
 import Header from '../Header';
+import MessageRepository from './../../repositories/messages'
 
 function AssistanChat() {
   const [threadId, setThreadId] = useState("thread_pHmpwDheaK2zyRzPk0WtQPBE")
@@ -10,8 +11,6 @@ function AssistanChat() {
   const [isTyping, setisTyping] = useState(false)
 
   useEffect(() => {
-    console.log("componentDidMount")
-
     consumer.subscriptions.create({
       channel: 'AiMessageChannel',
       assistant_id: 3,
@@ -39,12 +38,24 @@ function AssistanChat() {
     })
 
     return () => {
-      console.log(" ** disconect !! ** ")
       consumer.disconnect()
     }
   }, []);
 
-  const addMessage = (message) => {
+  const addMessage = (threadId, message) => {
+    let newMessage = {
+      message: {
+        thread_id: threadId,
+        text: message
+      }
+    }
+
+    MessageRepository.createMessage(
+      newMessage
+    ).then(response => {
+      console.log(response)
+    })
+
     setMessages([...messages, { id: "123", role: "user", content: [{ type: "text", text: { value: message } }]}])
   }
 

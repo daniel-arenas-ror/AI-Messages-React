@@ -5,8 +5,8 @@ export class MessageRepository {
     this.httpClient = http
   }
 
-  createMessage(){
-    return this.httpClient.post()
+  createMessage(data){
+    return this.httpClient.post('/messages', data)
   }
 }
 
