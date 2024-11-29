@@ -5,6 +5,7 @@ import consumer from "../../utils/cable";
 import Header from '../Header';
 import MessageRepository from './../../repositories/messages'
 import ThreadRepository from '../../repositories/thread';
+import AssistantRepository from '../../repositories/assistant';
 import { CiChat1 } from "react-icons/ci";
 import RoundedBtn from "../Common/RoundedBtn";
 import { useLocalStorage } from "./../../utils/localStorage";
@@ -21,6 +22,13 @@ function AssistanChat() {
     const queryParameters = new URLSearchParams(window.location.search)
     console.log(queryParameters.get("assistant_id"))
     setAssistantId(queryParameters.get("assistant_id"))
+
+    AssistantRepository.getAssistant(queryParameters.get("assistant_id"))
+      .then(response => {
+
+        console.log("obtener informacion assistente")
+        setAssistant(response.assistant)
+      });
 
     return () => {
       consumer.disconnect()
@@ -41,12 +49,36 @@ function AssistanChat() {
         .then(response => {
 
           console.log("conversacion iniciada")
-
-          setAssistant(response.assistant)
           setThreadId(response.thread_id)
         });
     } else {
-      console.log("ya tenemos una converzacion!!")
+      consumer.subscriptions.create({
+        channel: 'AiMessageChannel',
+        assistant_id: assistantId,
+        thread_id: threadId
+      }, {
+        connected: (data) => {
+          console.log('connected', data)
+        },
+        disconnected: (data) => {
+          console.log('disconnected', data)
+        },
+        received: (data) => {
+          switch (data.action) {
+            case 'updateMessages':
+              setMessages(data.messages.data)
+              break;
+            case 'startTyping':
+              setisTyping(true)
+              break;
+            case 'stopTyping':
+              setisTyping(false)
+              break;
+            default:
+              console.log("event dont fount!!")
+          }
+        },
+      })
     }
   }, [chatOpen]);
 
