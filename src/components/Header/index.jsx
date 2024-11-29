@@ -1,7 +1,7 @@
 import { IoClose } from "react-icons/io5";
 import RoundedBtn from "../Common/RoundedBtn"
 
-function Header() {
+function Header({ setChat }) {
   return (
    <div className="flex justify-between bg-[#202d33] h-[60px] p-3">
     <div className="flex items-center">
@@ -25,10 +25,8 @@ function Header() {
         </p>
       </div>
     </div>
-    <div
-        className="w-[85px]"
-      >
-        <RoundedBtn icon={<IoClose />} />
+    <div>
+        <RoundedBtn icon={<IoClose className="" />} onClick={setChat} />
       </div>
    </div> 
   )

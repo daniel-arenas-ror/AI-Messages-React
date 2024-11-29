@@ -10,10 +10,9 @@ function Messages({ isTyping, messages }){
 
   return(
     <div
-      className="bg-[#0a131a] bg-contain overflow-y-scroll h-100"
+      className="bg-[#0a131a] bg-contain overflow-y-scroll h-64"
       style={{ padding: "12px 7%" }}
       ref={divRef}
-      id="messages_content"
     >
       {messages.map((msg) => (
         <Message
