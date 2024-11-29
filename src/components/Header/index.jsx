@@ -21,7 +21,7 @@ function Header({ assistant, setChat }) {
         <p
           className="text-[#8796a1] text-xs"
         >
-          Online
+          {assistant?.name && "Online"} 
         </p>
       </div>
     </div>

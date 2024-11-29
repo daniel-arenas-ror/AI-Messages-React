@@ -36,9 +36,6 @@ function AssistanChat() {
   }, []);
 
   useEffect(() => {
-
-    console.log("threadId", threadId)
-
     if(chatOpen === false)
       return
 
@@ -52,6 +49,9 @@ function AssistanChat() {
           setThreadId(response.thread_id)
         });
     } else {
+      
+      console.log("we already have a conversation!!")
+
       consumer.subscriptions.create({
         channel: 'AiMessageChannel',
         assistant_id: assistantId,
@@ -66,6 +66,8 @@ function AssistanChat() {
         received: (data) => {
           switch (data.action) {
             case 'updateMessages':
+              console.log("updateMessages - data.messages.data")
+              console.log(data.messages.data)
               setMessages(data.messages.data)
               break;
             case 'startTyping':
@@ -96,7 +98,7 @@ function AssistanChat() {
       console.log(response)
     })
 
-    setMessages([...messages, { id: "123", role: "user", content: [{ type: "text", text: { value: message } }]}])
+    setMessages([...messages, { id: Date.now(), role: "user", content: [{ type: "text", text: { value: message } }]}])
   }
 
   const setChat = () => {

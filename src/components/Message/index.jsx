@@ -1,3 +1,5 @@
+import Markdown from 'react-markdown'
+
 function Message({ message }) {
 
   const msg  = message.content[0]?.text?.value
@@ -13,7 +15,7 @@ function Message({ message }) {
         className="flex justify-between items-end max-w-[410px] p-2"
         style={{ wordBreak: "break-word" }}
       >
-        <p className="text-white text-sm mr-2">{msg}</p>
+        <Markdown className="text-white text-sm mr-2">{msg}</Markdown>
       </div>
     </div>
   )
