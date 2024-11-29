@@ -1,7 +1,7 @@
 import { IoClose } from "react-icons/io5";
 import RoundedBtn from "../Common/RoundedBtn"
 
-function Header({ setChat }) {
+function Header({ assistant, setChat }) {
   return (
    <div className="flex justify-between bg-[#202d33] h-[60px] p-3">
     <div className="flex items-center">
@@ -16,7 +16,7 @@ function Header({ setChat }) {
       >
         <h1
           className="text-white font-medium"
-        >AI Name</h1>
+        >{assistant?.name}</h1>
 
         <p
           className="text-[#8796a1] text-xs"

@@ -4,6 +4,7 @@ import TextBox from "../TextBox";
 import consumer from "../../utils/cable";
 import Header from '../Header';
 import MessageRepository from './../../repositories/messages'
+import { ThreadRepository } from '../../repositories/thread';
 import { CiChat1 } from "react-icons/ci";
 import RoundedBtn from "../Common/RoundedBtn";
 
@@ -15,44 +16,31 @@ function AssistanChat() {
   const [isTyping, setisTyping] = useState(false)
 
   useEffect(() => {
+    console.log(" useEffect !! ")
 
     const queryParameters = new URLSearchParams(window.location.search)
-    const type = queryParameters.get("assistant_id")
-
-    //setAssistantId()
-
-    consumer.subscriptions.create({
-      channel: 'AiMessageChannel',
-      assistant_id: 3,
-      thread_id: threadId
-    }, {
-      connected: (data) => {
-        console.log('connected', data)
-      },
-      disconnected: (data) => {
-        console.log('disconnected', data)
-      },
-      received: (data) => {
-        switch (data.action) {
-          case 'updateMessages':
-            setMessages(data.messages.data)
-            break;
-          case 'startTyping':
-            setisTyping(true)
-            break;
-          case 'stopTyping':
-            setisTyping(false)
-            break;
-          default:
-            console.log("event dont fount!!")
-        }
-      },
-    })
+    console.log(queryParameters.get("assistant_id"))
+    setAssistantId(queryParameters.get("assistant_id"))
 
     return () => {
       consumer.disconnect()
     }
   }, []);
+
+  useEffect(() => {
+    if(chatOpen === false)
+      return
+
+    console.log("only check chatOpen!!")
+    console.log("threadId", threadId)
+    console.log("assistantId", assistantId)
+
+    if(assistantId && threadId === null){
+      console.log("no se ha iniciado ninguna converzacion1!! :<")
+    } else {
+      console.log("ya tenemos una converzacion!!")
+    }
+  }, [chatOpen]);
 
   const addMessage = (threadId, message) => {
     let newMessage = {
