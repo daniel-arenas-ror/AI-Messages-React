@@ -4,20 +4,20 @@ import TextBox from "../TextBox";
 import consumer from "../../utils/cable";
 import Header from '../Header';
 import MessageRepository from './../../repositories/messages'
-import { ThreadRepository } from '../../repositories/thread';
+import ThreadRepository from '../../repositories/thread';
 import { CiChat1 } from "react-icons/ci";
 import RoundedBtn from "../Common/RoundedBtn";
+import { useLocalStorage } from "./../../utils/localStorage";
 
 function AssistanChat() {
   const [chatOpen, setChatOpen] = useState(false)
   const [assistantId, setAssistantId] = useState(null)
-  const [threadId, setThreadId] = useState(null)
+  const [assistant, setAssistant] = useState(null)
+  const [threadId, setThreadId] = useLocalStorage("AI_ASSISTANT_V1_THREAD_ID", null)
   const [messages, setMessages] = useState([])
   const [isTyping, setisTyping] = useState(false)
 
   useEffect(() => {
-    console.log(" useEffect !! ")
-
     const queryParameters = new URLSearchParams(window.location.search)
     console.log(queryParameters.get("assistant_id"))
     setAssistantId(queryParameters.get("assistant_id"))
@@ -28,15 +28,23 @@ function AssistanChat() {
   }, []);
 
   useEffect(() => {
+
+    console.log("threadId", threadId)
+
     if(chatOpen === false)
       return
 
-    console.log("only check chatOpen!!")
-    console.log("threadId", threadId)
-    console.log("assistantId", assistantId)
-
     if(assistantId && threadId === null){
       console.log("no se ha iniciado ninguna converzacion1!! :<")
+
+      ThreadRepository.newThread(assistantId)
+        .then(response => {
+
+          console.log("conversacion iniciada")
+
+          setAssistant(response.assistant)
+          setThreadId(response.thread_id)
+        });
     } else {
       console.log("ya tenemos una converzacion!!")
     }
@@ -70,7 +78,7 @@ function AssistanChat() {
         <div className="absolute bottom-0 right-0 bg-red" >
           <div className="w-96 h-96 overflow-hidden" >
             <div className="flex flex-col">
-              <Header setChat={setChat} />
+              <Header setChat={setChat} assistant={assistant} />
               <Messages messages={messages} isTyping={isTyping} />
               <TextBox threadId={threadId} addMessage={addMessage} />
             </div>

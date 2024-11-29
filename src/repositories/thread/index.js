@@ -5,8 +5,12 @@ export class ThreadRepository {
     this.httpClient = http
   }
 
-  threadMessage(data){
-    return this.httpClient.post('/thread', data)
+  newThread(assistantId){
+    const data = {
+      assistant_id: assistantId
+    }
+
+    return this.httpClient.post('/v1/threads', data)
   }
 }
 
