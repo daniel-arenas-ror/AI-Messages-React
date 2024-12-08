@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Messages from "../Messages";
 import TextBox from "../TextBox";
-import consumer from "../../utils/cable";
 import Header from '../Header';
 import MessageRepository from './../../repositories/messages'
 import ThreadRepository from '../../repositories/thread';
@@ -9,6 +8,7 @@ import AssistantRepository from '../../repositories/assistant';
 import { CiChat1 } from "react-icons/ci";
 import RoundedBtn from "../Common/RoundedBtn";
 import { useLocalStorage } from "./../../utils/localStorage";
+import Subscription from '../../utils/Subcription';
 
 function AssistanChat() {
   const [chatOpen, setChatOpen] = useState(false)
@@ -29,10 +29,6 @@ function AssistanChat() {
         console.log("obtener informacion assistente")
         setAssistant(response.assistant)
       });
-
-    return () => {
-      consumer.disconnect()
-    }
   }, []);
 
   useEffect(() => {
@@ -47,40 +43,24 @@ function AssistanChat() {
 
           console.log("conversacion iniciada")
           setThreadId(response.thread_id)
+
+          Subscription(
+            assistantId,
+            response.thread_id,
+            setMessages,
+            setisTyping
+          );
         });
     } else {
       
       console.log("we already have a conversation!!")
 
-      consumer.subscriptions.create({
-        channel: 'AiMessageChannel',
-        assistant_id: assistantId,
-        thread_id: threadId
-      }, {
-        connected: (data) => {
-          console.log('connected', data)
-        },
-        disconnected: (data) => {
-          console.log('disconnected', data)
-        },
-        received: (data) => {
-          switch (data.action) {
-            case 'updateMessages':
-              console.log("updateMessages - data.messages.data")
-              console.log(data.messages.data)
-              setMessages(data.messages.data)
-              break;
-            case 'startTyping':
-              setisTyping(true)
-              break;
-            case 'stopTyping':
-              setisTyping(false)
-              break;
-            default:
-              console.log("event dont fount!!")
-          }
-        },
-      })
+      Subscription(
+        assistantId,
+        threadId,
+        setMessages,
+        setisTyping
+      );
     }
   }, [chatOpen]);
 
